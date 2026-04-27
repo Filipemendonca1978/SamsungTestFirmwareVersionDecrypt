@@ -420,7 +420,7 @@ def DecryptionFirmware(
                 return default
             return c
 
-        if FORCE_AP is not None and FORCE_MODEM is not None and FORCE_STARTBL is not None and FORCE_ENDBL is not None and FORCE_SUP is not None and FORCE_EUP is not None and FORCE_SY is not None and FORCE_EY is not None and args.output is not None and args.model is not None and args.csc is not None:
+        if FORCE_AP is not None and FORCE_MODEM is not None and FORCE_STARTBL is not None and FORCE_ENDBL is not None and FORCE_SUP is not None and FORCE_EUP is not None and FORCE_SY is not None and FORCE_EY is not None and args.output is not None:
             startBLVersion = FORCE_STARTBL
             endBLVersion = FORCE_ENDBL
             startUpdateCount = FORCE_SUP
@@ -982,6 +982,8 @@ if __name__ == "__main__":
         if args.ey:
             FORCE_EY = args.ey  
 
+    if args.model and args.csc is None:
+        sys.exit("Error: Critical parameters missing.")
 
     try:
         oldMD5Dict = LoadOldMD5Firmware()  # Get last MD5 encoded version number data

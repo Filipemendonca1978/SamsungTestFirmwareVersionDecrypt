@@ -453,11 +453,7 @@ md5firm='{
 echo "$firmreplace" > firmware.json
 echo "$minfirmreplace" > firmware_mini.json
 echo "$md5firm" > md5_encoded_firmware_versions.json
-if [[ "$1" == "normal" || -z "1" ]]; then
-	python samsung_test_firmware_decrypt.py
-elif [[ "$1" == "factory" ]]; then
-	python samsung_test_firmware_decrypt.py --ap $2 --cscp $3 --modem $4  --bls $7 --ble $8 --sup A --eup E --sy $5 --ey $6 --output firmware
-else
-	python samsung_test_firmware_decrypt.py --model $1 --csc $2
-fi
+
+python samsung_test_firmware_decrypt.py --model $1 --csc $2
+
 deactivate
