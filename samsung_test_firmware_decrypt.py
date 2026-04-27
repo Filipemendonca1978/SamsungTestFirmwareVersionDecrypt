@@ -719,45 +719,6 @@ def run():
                             decDicts[m] = {}
                         for cc, cc_data in cc_dict.items():
                             decDicts[m][cc] = cc_data
-        if hasNewVersion:
-            # Firmware update log
-            with open(AddTxtPath, "a+", encoding="utf-8") as file:
-                for model in modelDic:
-                    if (model in decDicts) and (model in oldJson):
-                        for cc in modelDic[model]["CC"]:
-                            if not cc in oldJson[model] or not cc in decDicts[model]:
-                                continue
-                            md5Keys = (
-                                decDicts[model][cc]["versions"].keys()
-                                - oldJson[model][cc]["versions"].keys()
-                            )
-                            if len(md5Keys) > 0:
-                                if isFirst:
-                                    file.write(f"***** Record time: {getNowTime()} *****\n")
-                                    isFirst = False
-                                Str = ""
-                                newVersions = {}
-                                for md5key in md5Keys:
-                                    newVersions[md5key] = decDicts[model][cc]["versions"][
-                                        md5key
-                                    ]
-                                newVersions = dict(
-                                    sorted(newVersions.items(), key=lambda x: x[1])
-                                )
-                                for key, value in newVersions.items():
-                                    textStr = "\n" + value
-                                    Str += f"{modelDic[model]['name']}-{getCountryName(cc)} version added test firmware version: {value}, corresponding MD5 value: {key}\n"
-                                file.write(Str)
-            # Update latest version for all models
-            with open("latest_versions_by_model.md", "w", encoding="utf-8") as f:
-                textStr = ""
-                for model in sorted(modelDic.keys()):
-                    if (model not in decDicts) or (model not in oldJson):
-                        continue
-                    for cc in modelDic[model]["CC"]:
-                        if not cc in decDicts[model].keys():
-                            continue
-                        textStr += f"#### {modelDic[model]['name']} {getCountryName(cc)} version: \nOfficial: {decDicts[model][cc]['latest_official']}  \nRegular update test: {decDicts[model][cc]['regular_update_test']}  \nMajor version test: {decDicts[model][cc]['major_version_test']} \n"
                 f.write(textStr)
     endTime = time.perf_counter()
     printStr(f"Total time: {round(endTime - startTime, 2)}s")
